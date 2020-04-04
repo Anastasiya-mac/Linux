@@ -1,0 +1,74 @@
+1. Создание ссылок:
+- создать файл file1 и наполнить его произвольным содержимым.
+
+anastasiya-mac@anastasiyamac-VirtualBox:~/Documents$ touch file1
+echo "Hi you" >> file1
+
+- скопировать файл file1 в file2.
+anastasiya-mac@anastasiyamac-VirtualBox:~/Documents$ cp file1 file2
+
+- создать символическую ссылку file3 на file1.
+anastasiya-mac@anastasiyamac-VirtualBox:~/Documents$ ln -s file1 file3
+anastasiya-mac@anastasiyamac-VirtualBox:~/Documents$ ls -li
+total 28
+394115 -rw-rw-r-- 2 anastasiya-mac anastasiya-mac    7 апр  4 13:55 file1
+413354 -rw-rw-r-- 1 anastasiya-mac anastasiya-mac    7 апр  4 13:56 file2
+394318 lrwxrwxrwx 1 anastasiya-mac anastasiya-mac    5 апр  4 14:07 file3 -> file1
+
+- создать жесткую ссылку file4 на file1.
+anastasiya-mac@anastasiyamac-VirtualBox:~/Documents$ ln file1 file4
+anastasiya-mac@anastasiyamac-VirtualBox:~/Documents$ ls -li
+total 28
+394115 -rw-rw-r-- 2 anastasiya-mac anastasiya-mac    7 апр  4 13:55 file1
+413354 -rw-rw-r-- 1 anastasiya-mac anastasiya-mac    7 апр  4 13:56 file2
+394115 -rw-rw-r-- 2 anastasiya-mac anastasiya-mac    7 апр  4 13:55 file4
+
+- посмотреть, какие айноды у файлов.
+inode в случае жесткой ссылки равные, а в случае с символьной ссылкой - разные.
+
+- удалить file1. Что стало с остальными созданными файлами? Попробовать вывести их на экран.
+
+anastasiya-mac@anastasiyamac-VirtualBox:~/Documents$ rm file1
+anastasiya-mac@anastasiyamac-VirtualBox:~/Documents$ ls -li
+total 24
+413354 -rw-rw-r-- 1 anastasiya-mac anastasiya-mac    7 апр  4 13:56 file2
+394318 lrwxrwxrwx 1 anastasiya-mac anastasiya-mac    5 апр  4 14:07 file3 -> file1
+394115 -rw-rw-r-- 1 anastasiya-mac anastasiya-mac    7 апр  4 13:55 file4
+Символьная ссылка указывает на не существующий файл, а жесткая ссылка сохранила содержание изначального файла file1.
+
+2. Работа со ссылками:
+- дать созданным файлам другие, произвольные имена.
+mv file3 file33
+mv file4 file44
+- создать новую символическую ссылку.
+ln -s file44 file444
+- переместить ссылки в другую директорию. Работают ли ссылки? Попробовать вывести их на экран.
+mv file444 LinkFolder
+После перемещения ссылка не работает и ссылается на не существующий файл.
+
+3. Права файлов:
+- создать два произвольных файла.
+touch file1
+touch file2
+- первому файлу присвоить права на чтение, запись для владельца и группы; на чтение для всех.
+anastasiya-mac@anastasiyamac-VirtualBox:~/Documents$ chmod ug+rw file1
+anastasiya-mac@anastasiyamac-VirtualBox:~/Documents$ chmod o+r file1
+- второму файлу присвоить права на чтение, запись только для владельца. Сделать это в численном и символьном виде.
+chmod ugo-rwx file2
+chmod u+r file2
+anastasiya-mac@anastasiyamac-VirtualBox:~/Documents$ ls -l
+total 8
+-rw-rw-r-- 1 anastasiya-mac anastasiya-mac    0 апр  4 14:46 file1
+-r-------- 1 anastasiya-mac anastasiya-mac    0 апр  4 14:46 file2
+ 
+В численном виде:
+chmod 400 file3
+
+4. Создать пользователя, обладающего возможностью выполнять действия от имени суперпользователя.
+Создала нового пользователя :
+sudo adduser test
+Задала права новому пользователю, добавив в группу sudo:
+sudo usermod -aG sudo test
+Переключилась на нового пользователя и проверила права командой visudo
+su test
+sudo visudo
