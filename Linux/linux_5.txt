@@ -1,0 +1,36 @@
+1.Написать скрипт, который удаляет из текстового файла пустые строки и заменяет маленькие символы на большие (воспользуйтесь tr или sed). Скрипт должен выводить информацию о том, как его использовать.
+
+#!/bin/bash
+echo "Use me for delete empty strings in your file and change lower register to upper register"
+file=$1
+echo "Your file: $file"
+sed ''/^$/d';s/.*/\U&/' $file>>newtext.txt
+
+
+3.Написать скрипт, который в указанной с помощью параметра -d директории создает указанные файлы. Если файлы уже существуют, то выводится предупреждения на экран. Если указано несколько директорий, то выводится ошибка с соответствующей информацией. Созданным файлам, которые имеют разрешения '.sh' нужно дать права на выполнения. Скрипт должен выводить информацию о том, как его использовать и понятные сообщения об ошибках. Примеры запуска:
+./script.sh -d /tmp/task_3
+./script.sh -d file1 file2 file3
+./script.sh -d /tmp/task_3 file1 file2.sh file3
+./script.sh -d /tmp/task_3 -d /tmp/task_3_2 file1 file2.sh file3
+
+~$ chmod ugo+x script.sh
+Немного отступила от задания, по другому сделать не получилось
+Не считая, того, что ругается на какую-то ] условия выполняет
+#!/bin/bash
+read -p "inter directory:" dir
+if [ -d $dir ]; then
+echo "OK, $dir exist"
+cd $dir
+read -p "inter file for creation:" file
+if [ -e $file ]; then
+echo "already exist"
+else
+if [ $file|grep "\S+" ]; then
+echo "create file"
+touch $file
+else
+echo "you input more then one file"
+fi
+fi
+else echo "directory is not found"
+fi
