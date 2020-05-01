@@ -1,0 +1,106 @@
+1. Объявить две целочисленные переменные $a и $b и задать им произвольные начальные значения. Затем написать скрипт, который работает по следующему принципу:
+если $a и $b положительные, вывести их разность;
+если $а и $b отрицательные, вывести их произведение;
+если $а и $b разных знаков, вывести их сумму;
+Ноль можно считать положительным числом.
+$a = -5;
+$b = -8;
+if (($a >= 0) && ($b >= 0)) 
+    echo "Оба положительные: ", $a-$b;
+elseif (($a < 0) && ($b < 0))
+    echo "Оба отрицательные: ", $a * $b;
+else
+    echo "Разные знаки: ", $a + $b;
+?>
+2. Реализовать основные 4 арифметические операции в виде функций с двумя параметрами. Обязательно использовать оператор return.
+function summa($arg1, $arg2) {
+    return  $arg1 + $arg2;
+};
+function minus($arg1, $arg2) {
+    return  $arg1 - $arg2;
+};
+function multiply($arg1, $arg2) {
+    return  $arg1 * $arg2;
+};
+function split($arg1, $arg2) {
+    if ($arg2 == 0)
+        return "Делить на 0 нельзя";
+    return  $arg1 / $arg2;
+};
+echo summa(5, 4), "- сложение <br>";
+echo minus(10, 1),  "- вычитание <br>";
+echo multiply(3, 3), "- умножение<br>";
+echo split(18, 2), "- деление";
+4. Реализовать функцию с тремя параметрами: function mathOperation($arg1, $arg2, $operation), где $arg1, $arg2 – значения аргументов, $operation 
+– строка с названием операции. В зависимости от переданного значения операции выполнить одну из арифметических операций 
+(использовать функции из пункта 3) и вернуть полученное значение (использовать switch).
+function mathOperation($arg1, $arg2, $operation) {
+    switch($operation) {
+        case "Сложение":
+            echo summa($arg1, $arg2);
+        break;    
+        case "Вычитание":
+            echo minus($arg1, $arg2);
+        break; 
+        case "Умножение":
+            echo multiply($arg1, $arg2);
+        break; 
+        case "Деление":
+            echo split($arg1, $arg2);
+        break; 
+        default:
+        echo "Что-то пошло не так";
+    }
+}
+echo "Ваш результат: ",  mathOperation(10, 0, "Деление");
+5. Посмотреть на встроенные функции PHP. Используя имеющийся HTML-шаблон, вывести текущий год в подвале при помощи встроенных функций PHP.
+<?php
+$today = date('l jS \of F Y h:i:s A');
+?>
+<div class="footer">
+    <p class="copyright"> &copy ValovaAA <?=$today?></p>
+</div>
+6. *С помощью рекурсии организовать функцию возведения числа в степень. Формат: function power($val, $pow), где $val – заданное число, $pow – степень.
+function power($val, $pow) {
+   if ($pow == 0) {
+       return 1;
+   }
+    return $val * power($val, $pow-1);
+};
+echo power(2, 10);
+7. *Написать функцию, которая вычисляет текущее время и возвращает его в формате с правильными склонениями, например:
+22 часа 15 минут
+21 час 43 минуты
+*/
+//час 1 21 
+//часа 2 3 4 22 23 24
+//часов 5 6 7 8 9 10 11 12 - 20
+function timeInfHours() {
+    $hours = date("H");
+    if (($hours>=5) && ($hours <=20)) {
+        echo $hours, " часов";
+    }
+    elseif (($hours == 1) && ($hours == 21)) {
+        echo $hours, " час";
+    }
+    else {
+        echo $hours, " часа";
+    }
+};
+//минуты 2-4 22-24 32-34 42-44 52-54
+//минут 5-20 25-30 35-40 45-50 55-60
+//минута 1 21 31 41 51
+function timeInfMinutes() {
+    $minute = date("i");
+    if ((($minute >=2) && ($minute <=4)) || (($minute >=22) && ($minute <=24) || (($minute >=42) && ($minute <=44)) || (($minute >=52) && ($minute <=54)))) {
+        echo $minute, " минут";
+    }
+    elseif (($minute  == 1) || ($minute  == 21) || ($minute  == 31) || ($minute  == 41) || ($minute  == 51)) {
+        echo $minute, " минута";
+    }
+    else {
+        echo  $minute, " минут";
+    }
+}
+echo timeInfHours(), " ", timeInfMinutes();
+?>
